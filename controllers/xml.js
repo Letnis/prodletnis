@@ -1,13 +1,13 @@
 module.exports.getxml = function(application, req, res){
-        
+    //este serviço espera no body a senha do certificado, cnpj, uf e caminho do certificado
     var fs = require('fs');
     var request = require("request");
     var arrayResult = new Array();
 
     var specialRequest = request.defaults({
         agentOptions: {
-            pfx: fs.readFileSync("Letnis.pfx"),
-            passphrase: '*****'
+            pfx: fs.readFileSync(req.body.path_certificado),
+            passphrase: req.body.senha
         }
     });
 
@@ -21,7 +21,7 @@ module.exports.getxml = function(application, req, res){
             'cache-control': 'no-cache',
             'content-type': 'text/xml'
         },
-        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>35</cUFAutor>\r\n               <CNPJ>08433501000173</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
+        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>'+req.body.uf+'</cUFAutor>\r\n               <CNPJ>'+req.body.cnpj+'</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
     };
 
     specialRequest(options, function (error, response, body) {
