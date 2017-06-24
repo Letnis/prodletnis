@@ -6,8 +6,8 @@ module.exports.getxml = function(application, req, res){
 
     var specialRequest = request.defaults({
         agentOptions: {
-            pfx: fs.readFileSync(req.body.path_certificado),
-            passphrase: req.body.senha
+            pfx: fs.readFileSync(req.query.path_certificado),
+            passphrase: req.query.senha
         }
     });
 
@@ -21,7 +21,7 @@ module.exports.getxml = function(application, req, res){
             'cache-control': 'no-cache',
             'content-type': 'text/xml'
         },
-        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>'+req.body.uf+'</cUFAutor>\r\n               <CNPJ>'+req.body.cnpj+'</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
+        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>'+req.query.uf+'</cUFAutor>\r\n               <CNPJ>'+req.query.cnpj+'</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
     };
 
     specialRequest(options, function (error, response, body) {
