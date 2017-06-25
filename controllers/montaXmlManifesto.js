@@ -28,15 +28,17 @@ module.exports.montaXmlManifesto = function (application, req, res) {
 };
 
 
-
-
-
 //este module é o que monta o xml que de fato vai para o sefaz
 module.exports.montaXmlManifestoSefaz = function(application, req, res, xml){
     var new_xml = xml.slice(38); //tira as 38 posições, pois, o java que assina adiciona uma tag desnecessária no xml
     var body_xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rec="http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento">\r\n   <soapenv:Header>\r\n      <rec:nfeCabecMsg>\r\n         <!--Optional:-->\r\n         <rec:versaoDados>1.00</rec:versaoDados>\r\n         <!--Optional:-->\r\n         <rec:cUF>'+req.body.uf+'</rec:cUF>\r\n      </rec:nfeCabecMsg>\r\n   </soapenv:Header>\r\n   <soapenv:Body>\r\n      <rec:nfeDadosMsg>\r\n'+new_xml+'\r\n      </rec:nfeDadosMsg>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>';
 
     return body_xml;
+}
 
 
+module.exports.montaXmlGetNotas = function(application, req, res){
+    var body_xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>'+req.query.uf+'</cUFAutor>\r\n               <CNPJ>'+req.query.cnpj+'</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>';
+
+    return body_xml;
 }

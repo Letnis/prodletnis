@@ -11,6 +11,8 @@ module.exports.getxml = function(application, req, res){
         }
     });
 
+    var body = application.controllers.montaXmlManifesto.montaXmlGetNotas(application, req, res);
+
     var options = {
         method: 'POST',
         url: 'https://hom.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx',
@@ -21,7 +23,7 @@ module.exports.getxml = function(application, req, res){
             'cache-control': 'no-cache',
             'content-type': 'text/xml'
         },
-        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfed="http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nfed:nfeDistDFeInteresse>\r\n         <nfed:nfeDadosMsg>\r\n            <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">\r\n               <tpAmb>2</tpAmb>\r\n               <cUFAutor>'+req.query.uf+'</cUFAutor>\r\n               <CNPJ>'+req.query.cnpj+'</CNPJ>\r\n               <distNSU>\r\n                  <ultNSU>000000000000000</ultNSU>\r\n               </distNSU>\r\n            </distDFeInt>\r\n         </nfed:nfeDadosMsg>\r\n      </nfed:nfeDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
+        body: body
     };
 
     specialRequest(options, function (error, response, body) {
