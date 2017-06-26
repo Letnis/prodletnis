@@ -1,4 +1,4 @@
-module.exports.getxml = function(application, req, res){
+module.exports.getxml = function (application, req, res) {
     //este serviço espera no body a senha do certificado, cnpj, uf e caminho do certificado
     var fs = require('fs');
     var request = require("request");
@@ -32,7 +32,7 @@ module.exports.getxml = function(application, req, res){
         var parseString = require('xml2js').parseString;
 
         parseString(body, function (err, result) {
-            application.controllers.trataretornosefaz.trataRetornoSefaz(result, req, res, application, parseString, arrayResult, function(){
+            application.controllers.trataretornosefaz.trataRetornoSefaz(result, req, res, application, parseString, arrayResult, function () {
                 console.log('resultado');
                 console.log(arrayResult);
                 res.setHeader('Access-Control-Allow-Origin', '*');
