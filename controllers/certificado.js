@@ -55,7 +55,8 @@ module.exports.verificaValidade = function (application, req, res) {
     var pem = require('pem');
     var strPem = null;
     pem.config({
-        pathOpenSSL: 'C:\\OpenSSL-Win64\\bin\\openssl.exe'
+        pathOpenSSL: '/usr/bin/openssl'
+        //pathOpenSSL: 'C:\\OpenSSL-Win64\\bin\\openssl.exe'
     });
 
 
@@ -83,7 +84,8 @@ module.exports.verificaSenha = function (application, req, res) {
     var fs = require('fs');
     var pem = require('pem');
     pem.config({
-        pathOpenSSL: 'C:\\OpenSSL-Win64\\bin\\openssl.exe'
+        pathOpenSSL: '/usr/bin/openssl'
+        //pathOpenSSL: 'C:\\OpenSSL-Win64\\bin\\openssl.exe'
     });
     var pfx = fs.readFileSync(req.query.path_certificado);
     pem.readPkcs12(req.query.path_certificado, { p12Password: req.query.senha }, function (err, cert) {

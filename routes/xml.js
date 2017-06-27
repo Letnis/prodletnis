@@ -12,4 +12,9 @@ module.exports = function(application){
 		application.controllers.certificado.verificaSenha(application, request, response);
 	});
 
+
+	application.get('/servicos/buscaCte', function(request, response){
+		application.controllers.cte.buscaCte(application, request, response);
+	})
+
 };
