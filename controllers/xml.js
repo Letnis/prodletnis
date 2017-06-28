@@ -29,21 +29,30 @@ module.exports.getxml = function (application, req, res) {
     specialRequest(options, function (error, response, body) {
         if (error) throw new Error(error);
         var parseString = require('xml2js').parseString;
-        
+
         parseString(body, function (err, result) {
             application.controllers.trataretornosefaz.trataRetornoSefaz(result, req, res, application, parseString, arrayResult, function () {
-                console.log('resultado');
-                console.log(arrayResult);
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
                 res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
                 res.setHeader('Access-Control-Allow-Credentials', true); // If needed	
                 var myJsonString = JSON.stringify(arrayResult);
-                //res.send(arrayResult);
-                res.send(myJsonString);
+                var connection = application.config.dbConnection();
+                var xmlDAO = new application.models.manifestoNfeDAO(connection);
+                xmlDAO.gravarDadosXmlNfeConsulta(arrayResult, function (error, result) {
+                    if (error) {
+                        console.log(error);
+                        res.json({ msg: 'Erro ao inserir dados',
+                                   detalhes: error});
+                    } else {
+                        res.json({ msg: 'Dados inseridos com sucesso',
+                                  detaçjes: result });
+                    }
+                })
+
             });
         })
-        
+
     })
 
 }

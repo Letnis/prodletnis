@@ -11,7 +11,7 @@ module.exports.buscaCte = function (application, req, res) {
         }
     });
 
-    //var body = application.controllers.montaXmlManifesto.montaXmlGetNotas(application, req, res);
+    var body = application.controllers.montaXmlManifesto.montaXmlGetCte(application, req, res);
 
     var options = {
         method: 'POST',
@@ -24,16 +24,18 @@ module.exports.buscaCte = function (application, req, res) {
             'cache-control': 'no-cache',
             'content-type': 'text/xml'
         },
-        body: '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cted="http://www.portalfiscal.inf.br/cte/wsdl/CTeDistribuicaoDFe">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <cted:cteDistDFeInteresse>\r\n         <!--Optional:-->\r\n         <cted:cteDadosMsg>\r\n               <distDFeInt versao="1.00" xmlns="http://www.portalfiscal.inf.br/cte">\r\n               <tpAmb>2</tpAmb>  \r\n               <cUFAutor>35</cUFAutor>\r\n               <CNPJ>08433501000173</CNPJ> \r\n              <!-- 03571044000160 08433501000173 -->\r\n               \t<distNSU>\r\n               \t\t<ultNSU>000000000000000</ultNSU>\r\n               \t</distNSU>\r\n               </distDFeInt>\r\n         </cted:cteDadosMsg>\r\n      </cted:cteDistDFeInteresse>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>'
+        body: body
     };
 
     specialRequest(options, function (error, response, body) {
         if (error) throw new Error(error);
-        res.send(body);
-        /*
+        //res.json(body);
+
         var parseString = require('xml2js').parseString;
 
         parseString(body, function (err, result) {
+            res.json(result);
+            /*
             application.controllers.trataretornosefaz.trataRetornoSefaz(result, req, res, application, parseString, arrayResult, function () {
                 console.log('resultado');
                 console.log(arrayResult);
@@ -44,9 +46,12 @@ module.exports.buscaCte = function (application, req, res) {
                 var myJsonString = JSON.stringify(arrayResult);
                 //res.send(arrayResult);
                 res.send(myJsonString);
+                
             });
+            */
+            
         })
-        */
+
     })
 
 }

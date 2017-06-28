@@ -16,6 +16,8 @@ app.use(bodyParser.json());
 
 consign().include('routes')
     .then('controllers')
+    .then('models')
+	.then('config/dbConnection.js')     
 	.into(app);
 
 module.exports = app;

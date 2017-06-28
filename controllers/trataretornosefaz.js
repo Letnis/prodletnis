@@ -4,13 +4,19 @@ module.exports.trataRetornoSefaz = function (retornoSefaz, req, res, app, parseS
     var gzip = zlib.createGzip();
     var x = 0;
     var i = 0;
-    var doczip = retornoSefaz["soap:Envelope"]["soap:Body"][0]["nfeDistDFeInteresseResponse"][0]["nfeDistDFeInteresseResult"][0]["retDistDFeInt"][0]["loteDistDFeInt"][0]["docZip"];
+    var doczip = null;
     const co = require('co');
     var bufferArray = new Array();
     var stringArray = new Array();
 
     var async = require('async');
 
+    try {
+        doczip = retornoSefaz["soap:Envelope"]["soap:Body"][0]["nfeDistDFeInteresseResponse"][0]["nfeDistDFeInteresseResult"][0]["retDistDFeInt"][0]["loteDistDFeInt"][0]["docZip"];
+    } catch (err) {
+        res.json({ msg: 'erro sefaz' });
+        return;
+    }
     async.eachSeries(doczip, function (prime, callback1) {
 
         var newXml = doczip[x]["_"];
