@@ -29,7 +29,7 @@ module.exports.getxml = function (application, req, res) {
     specialRequest(options, function (error, response, body) {
         if (error) throw new Error(error);
         var parseString = require('xml2js').parseString;
-
+        //console.log(body);
         parseString(body, function (err, result) {
             application.controllers.trataretornosefaz.trataRetornoSefaz(result, req, res, application, parseString, arrayResult, function () {
                 res.setHeader('Access-Control-Allow-Origin', '*');

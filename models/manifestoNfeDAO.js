@@ -18,8 +18,10 @@ manifestoNfeDAO.prototype.gravarDadosXmlNfeConsulta = function (dados, callback)
             var ie    = dados[x]['resNFe']['IE'];
             var dhemi = dados[x]['resNFe']['dhEmi'];
             var data  = dhemi[0].substring(0,4) + dhemi[0].substring(5,7) + dhemi[0].substring(8,10);
+            var nsu   = dados[x]['resNFe']['nsu'];
+            var xml   = dados[x]['resNFe']['xml'];
 
-            dadosGravar.push(["1", "1", chnfe, cnpj, nome, ie, data, "01", "teste"]);
+            dadosGravar.push(["1", "1", chnfe, cnpj, nome, ie, data, nsu, xml]);
             nfe++;
 
         } catch (err) {
@@ -31,9 +33,8 @@ manifestoNfeDAO.prototype.gravarDadosXmlNfeConsulta = function (dados, callback)
         if (err) { throw err; }
     });
 
-
     gravar.push(dadosGravar);
-
+    console.log(gravar);
     var sql = 'insert xmlnfeconsulta (id_empresa, id_filial, chnfe, cnpj, nome, ie, dhemi, nsu, xml) values ?';
     var values = gravar;
 

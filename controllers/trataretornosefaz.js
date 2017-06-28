@@ -39,6 +39,7 @@ module.exports.trataRetornoSefaz = function (retornoSefaz, req, res, app, parseS
 
             zlib.unzip(prime, (err, prime) => {
                 if (!err) {
+                    //console.log(prime.toString());
                     stringArray.push(prime.toString());
                     callback2();
                 } else {
@@ -53,12 +54,24 @@ module.exports.trataRetornoSefaz = function (retornoSefaz, req, res, app, parseS
 
 
     function getResultado() {
+        var x = 0;
         var async3 = require('async');
         async3.eachSeries(stringArray, function (prime, callback3) {
 
             parseString(prime, function (err, result4) {
-                arrayResult.push(result4);
-                callback3();
+                try {
+                    //console.log(stringArray[x]);
+                    result4['resNFe'].nsu = doczip[x]['$']['NSU'];
+                    var xml64 = new Buffer(stringArray[x]).toString('base64');
+                    result4['resNFe'].xml = xml64;
+                    x++;
+                    arrayResult.push(result4);
+                    callback3();
+                } catch (err) {
+                    x++;
+                    callback3();
+                }
+
             });
 
         }, function (err) {
