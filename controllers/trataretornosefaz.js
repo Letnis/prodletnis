@@ -14,7 +14,13 @@ module.exports.trataRetornoSefaz = function (retornoSefaz, req, res, app, parseS
     try {
         doczip = retornoSefaz["soap:Envelope"]["soap:Body"][0]["nfeDistDFeInteresseResponse"][0]["nfeDistDFeInteresseResult"][0]["retDistDFeInt"][0]["loteDistDFeInt"][0]["docZip"];
     } catch (err) {
-        res.json({ msg: 'erro sefaz' });
+
+        try{
+            res.json(retornoSefaz["soap:Envelope"]["soap:Body"][0]["nfeDistDFeInteresseResponse"][0]["nfeDistDFeInteresseResult"][0]["retDistDFeInt"][0]['xMotivo']);
+        }catch (err){
+            res.json({msg: 'Erro desconhecido'});
+        }
+        
         return;
     }
     async.eachSeries(doczip, function (prime, callback1) {

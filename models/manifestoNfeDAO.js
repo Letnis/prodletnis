@@ -65,6 +65,20 @@ manifestoNfeDAO.prototype.atualizarNsuManifestoNfe = function (dados, callback) 
     this._connection.query({ sql, values }, callback);
 }
 
+
+
+manifestoNfeDAO.prototype.getFilialporCnpj = function (application, cnpj, callback) {
+    var sql = 'SELECT * FROM filial WHERE cnpj = ?';
+    var dados = [cnpj];
+    this._connection.query( sql, dados , callback);
+}
+
+manifestoNfeDAO.prototype.getUltimoNsuManifestoNfe = function (application, filial, callback) {
+    var sql = 'SELECT * FROM manifestonfensu WHERE id_filial = ?';
+    var dados = [filial];
+    this._connection.query( sql, dados , callback);
+}
+
 module.exports = function () {
     return manifestoNfeDAO;
 }
