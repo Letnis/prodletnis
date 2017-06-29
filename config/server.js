@@ -14,6 +14,13 @@ var request = require('request'),
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+/* setar as variáveis 'view engine' e 'views' do express */
+app.set('view engine', 'ejs');
+app.set('views', './views');
+/* configurar o middleware express.static */
+app.use(express.static('./react'));
+
+
 consign().include('routes')
     .then('controllers')
     .then('models')

@@ -1,5 +1,8 @@
-module.exports = function(application){
-	application.get('/', function(request, response){
-        res.render("../views/index.html");
+module.exports = function (application) {
+
+	var path = require('path');
+
+	application.get('/', function (request, response) {
+		response.render('index');
 	});
 };
