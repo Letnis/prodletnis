@@ -39,7 +39,7 @@ module.exports.getxml = function (application, req, res) {
                 var myJsonString = JSON.stringify(arrayResult);
                 var connection = application.config.dbConnection();
                 var xmlDAO = new application.models.manifestoNfeDAO(connection);
-                xmlDAO.gravarDadosXmlNfeConsulta(arrayResult, function (error, result) {
+                xmlDAO.gravarDadosXmlNfeConsulta(application, arrayResult, function (error, result) {
                     if (error) {
                         console.log(error);
                         res.json({ msg: 'Erro ao inserir dados',
