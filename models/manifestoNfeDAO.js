@@ -8,7 +8,6 @@ manifestoNfeDAO.prototype.gravarDadosXmlNfeConsulta = function (dados, callback)
     var dadosGravar = [];
     var gravar = [];
     var x = 0;
-    var nfe = 57;
 
     async.eachSeries(dados, function (prime, callback_each) {
         try {
@@ -22,7 +21,6 @@ manifestoNfeDAO.prototype.gravarDadosXmlNfeConsulta = function (dados, callback)
             var xml   = dados[x]['resNFe']['xml'];
 
             dadosGravar.push(["1", "1", chnfe, cnpj, nome, ie, data, nsu, xml]);
-            nfe++;
 
         } catch (err) {
         }
@@ -35,7 +33,9 @@ manifestoNfeDAO.prototype.gravarDadosXmlNfeConsulta = function (dados, callback)
 
     gravar.push(dadosGravar);
     console.log(gravar);
-    var sql = 'insert xmlnfeconsulta (id_empresa, id_filial, chnfe, cnpj, nome, ie, dhemi, nsu, xml) values ?';
+    var sql = 'replace into xmlnfeconsulta (id_empresa, id_filial, chnfe, cnpj, nome, ie, dhemi, nsu, xml) values ?';
+
+    //var sql = 'insert xmlnfeconsulta (id_empresa, id_filial, chnfe, cnpj, nome, ie, dhemi, nsu, xml) values ?';
     var values = gravar;
 
     this._connection.query({ sql, values }, callback);
